@@ -1,23 +1,31 @@
-import os 
+nome = ""
+preco = 0.0
+desconto = 0.0
+preco_final = 0.0
+produtos = []
 
-def cal_final(base,desc):
-    return base - base * (desc/100)
+def CalcularValorFinal(Valor_base = 0.0, taxa_desconto = 0.0):
+    valor_com_desconto = Valor_base - (Valor_base * (taxa_desconto/100))
+    return valor_com_desconto
 
-def exibir(nome, base, fin):
-    economia = base - fin
-    limpar()
-    print("-" * 40)
-    print(f"PRODUTO: {nome}\nPreço Original: R$ {base}\nPreço com Desconto: R$ {fin}\nEconomia Gerada: R$ {economia}")
-    print("-" * 40)
-    input("Pressione ENTRE para ir para o proximo produto.")
-    limpar()
+def ExibirRecibo(nome_produto = "", valor_original = 0.0, valor_pago = 0.0):
+    print("-" * 20)
+    print(f"Produto: {nome_produto} \nVocê economizou: R${(valor_original - valor_pago):.2f} \nValor a pagar: R${valor_pago:.2f}")
+    print("-" * 20)
 
-def limpar():
-    os.system("clear")
+while True:
+    nome =  input(f"Digite o nome do produto: ")
+    preco = float(input(f"Digite o preço do produto: R$"))
+    desconto = float(input(f"Digite a procentagem de desconto: %"))
 
-for i in range(3):
-    nome =  input(f"Digite o nome do {i+1} produto: ")
-    preço_base = float(input(f"Digite o preço do {i+1} produto: R$"))
-    desconto = float(input(f"Digite a procentagem de {i+1} desconto: %"))
-    preco_fin = cal_final(preço_base, desconto)
-    exibir(nome,preço_base,preco_fin)
+    preco_final = CalcularValorFinal(preco, desconto)
+
+    produto = [nome, preco, desconto, preco_final]
+    produtos.append(produto)
+
+    opcao = input("Deseja incluir um novo produto? s/n").lower()
+
+    if opcao != "s":
+        for produto in produtos:
+            ExibirRecibo(produto[0], produto[1], produto[3])
+        break
